@@ -1,19 +1,9 @@
-controllers:
-    resource:
-        path: ../src/Controller/
-        namespace: App\Controller
-    type: attribute
 auth:
-    path: /api/auth/login
-    # the controller value has the format 'controller_class::method_name'
-    controller: App\Authenticator\Controller\AuthenticatorController::authenticate
-
-register:
-    path: /api/auth/register
-    # the controller value has the format 'controller_class::method_name'
-    controller: App\Controller\RegistratorController::register
-
+    resource: '../src/Authenticator/Controller/'
+    type: annotation
+    name_prefix: 'auth_'
 surveys:
-    path: /api/surveys
-    # the controller value has the format 'controller_class::method_name'
-    controller: App\Survey\Api\SurveyController::surveys
+    resource: '../src/Survey/Api/'
+    type: annotation
+    prefix: '/api'
+    name_prefix: 'surveys_'

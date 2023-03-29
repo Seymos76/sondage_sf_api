@@ -11,7 +11,7 @@ use Doctrine\ORM\EntityManagerInterface;
 
 class SurveyController extends AbstractController
 {
-    #[Route(path: '/api/surveys', name: 'surveys', methods: 'POST')]
+    #[Route(path: '/surveys', name: 'surveys', methods: 'POST')]
     public function surveys(Request $request, SerializerInterface $serializer, EntityManagerInterface $entityManager)
     {
         $newSurvey = $serializer->deserialize($request->getContent(), Survey::class, 'json');
@@ -20,5 +20,11 @@ class SurveyController extends AbstractController
         return $this->json([
             'survey' => $newSurvey
         ]);
+    }
+
+    #[Route(path: '/is-awake', name: 'is_awake', methods: 'GET')]
+    public function isAwake()
+    {
+        return $this->json(['message' => "Server is awake !"], 200);
     }
 }

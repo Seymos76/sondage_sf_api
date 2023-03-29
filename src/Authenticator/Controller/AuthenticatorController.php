@@ -10,7 +10,7 @@ use Symfony\Component\Security\Http\Attribute\CurrentUser;
 
 class AuthenticatorController extends AbstractController
 {
-    #[Route(path: '/auth', name: 'auth')]
+    #[Route(path: '/auth/login', name: 'auth_login')]
     public function authenticate(#[CurrentUser] ?SecurityUser $securityUser, UserPasswordHasherInterface $userPasswordHasher)
     {
         dump($securityUser);
