@@ -9,15 +9,21 @@
         "php": ">=8.2.3",
         "ext-ctype": "*",
         "ext-iconv": "*",
+        "api-platform/core": "^3.1",
+        "api-platform/schema-generator": "^5.2",
+        "cocur/slugify": "^4.3",
         "doctrine/annotations": "^2.0",
         "doctrine/doctrine-bundle": "^2.8",
         "doctrine/doctrine-migrations-bundle": "^3.2",
         "doctrine/orm": "^2.14",
+        "nelmio/cors-bundle": "^2.3",
         "phpdocumentor/reflection-docblock": "^5.3",
         "phpstan/phpdoc-parser": "^1.16",
         "symfony/apache-pack": "^1.0",
+        "symfony/asset": "6.2.*",
         "symfony/console": "6.2.*",
         "symfony/dotenv": "6.2.*",
+        "symfony/expression-language": "6.2.*",
         "symfony/flex": "^2",
         "symfony/framework-bundle": "6.2.*",
         "symfony/property-access": "6.2.*",
@@ -25,6 +31,8 @@
         "symfony/runtime": "6.2.*",
         "symfony/security-bundle": "6.2.*",
         "symfony/serializer": "6.2.*",
+        "symfony/twig-bundle": "6.2.*",
+        "symfony/validator": "6.2.*",
         "symfony/yaml": "6.2.*"
     },
     "config": {
@@ -56,15 +64,23 @@
     },
     "scripts": {
         "auto-scripts": {
-            "doctrine:ensure-production-settings": "symfony-cmd",
-            "doctrine:migrations:current": "symfony-cmd",
-            "doctrine:migrations:migrate": "symfony-cmd",
-            "doctrine:migrations:up-to-date": "symfony-cmd",
             "cache:clear": "symfony-cmd",
             "assets:install %PUBLIC_DIR%": "symfony-cmd"
         },
+        "database-dev": {
+            "doctrine:database:create": "symfony-cmd",
+            "doctrine:schema:update --force": "symfony-cmd",
+            "doctrine:fixtures:load --no-interaction": "symfony-cmd"
+        },
+        "database-prod": {
+            "doctrine:ensure-production-settings": "symfony-cmd",
+            "doctrine:migrations:current": "symfony-cmd",
+            "doctrine:migrations:migrate": "symfony-cmd",
+            "doctrine:migrations:up-to-date": "symfony-cmd"
+        },
         "post-install-cmd": [
-            "@auto-scripts"
+            "@auto-scripts",
+            "@database-dev"
         ],
         "post-update-cmd": [
             "@auto-scripts"

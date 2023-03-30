@@ -10,17 +10,25 @@ doctrine:
         enable_lazy_ghost_objects: true
         naming_strategy: doctrine.orm.naming_strategy.underscore_number_aware
         auto_mapping: true
+        class_metadata_factory_name:  Doctrine\ORM\Mapping\ClassMetadataFactory
         mappings:
             Auth:
-                is_bundle: false
+                type: annotation
                 dir: '%kernel.project_dir%/src/Authenticator/Entity'
-                prefix: 'Authenticator\Entity'
+                is_bundle: false
+                prefix: App\Authenticator\Entity
                 alias: Auth
             Survey:
-                is_bundle: false
+                type: annotation
                 dir: '%kernel.project_dir%/src/Survey/Entity'
-                prefix: 'Survey\Entity'
+                is_bundle: false
+                prefix: App\Survey\Entity
                 alias: Survey
+            Default:
+                type: annotation
+                dir: '%kernel.project_dir%/src/Entity'
+                is_bundle: false
+                prefix: App\Entity
 
 when@test:
     doctrine:
