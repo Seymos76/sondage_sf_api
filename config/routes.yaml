@@ -6,4 +6,3 @@ surveys:
     resource: '../src/Survey/Api/'
     type: attribute
     prefix: '/api'
-    name_prefix: 'surveys_'

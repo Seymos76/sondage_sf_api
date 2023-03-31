@@ -2,23 +2,44 @@
 
 namespace App\Survey\Api;
 
+use App\Survey\Entity\SurveyResult;
+use App\Survey\Repository\SurveyResultRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Serializer\SerializerInterface;
-use App\Survey\Entity\Survey;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
 class SurveyController extends AbstractController
 {
-    #[Route(path: '/surveys', name: 'surveys', methods: 'POST')]
-    public function surveys(Request $request, SerializerInterface $serializer, EntityManagerInterface $entityManager)
+    #[Route(path: '/surveys', name: 'api_submit_surveys', methods: 'POST')]
+    public function surveys(Request $request, EntityManagerInterface $entityManager)
     {
-        $newSurvey = $serializer->deserialize($request->getContent(), Survey::class, 'json');
-        $entityManager->persist($newSurvey);
+        $data = json_decode($request->getContent(), true, 512, JSON_THROW_ON_ERROR);
+        $surveyResult = new SurveyResult();
+        $surveyResultToPersist = $surveyResult->build($data);
+        $entityManager->persist($surveyResultToPersist);
         $entityManager->flush();
         return $this->json([
-            'survey' => $newSurvey
+            'message' => "Sondage ajouté"
+        ], 201);
+    }
+    #[Route(path: '/surveys/results', name: 'api_survey_results', methods: 'GET')]
+    public function surveyResults(SurveyResultRepository $surveyResultRepository)
+    {
+        $surveyResults = $surveyResultRepository->findAll();
+        //dump($surveyResults);
+        $normalizer = new ObjectNormalizer();
+        $encoder = new JsonEncoder();
+
+        $serializer = new Serializer([$normalizer], [$encoder]);
+        $serialized = $serializer->serialize($surveyResults, 'json', [AbstractNormalizer::IGNORED_ATTRIBUTES => ['created_at']]);
+        return $this->json([
+            'message' => $serialized
         ]);
     }
 
