@@ -28,6 +28,7 @@ class SurveyController extends AbstractController
             'message' => "Sondage ajouté"
         ], 201);
     }
+
     #[Route(path: '/surveys/results', name: 'api_survey_results', methods: 'GET')]
     public function surveyResults(SurveyResultRepository $surveyResultRepository)
     {
@@ -40,6 +41,21 @@ class SurveyController extends AbstractController
         $serialized = $serializer->serialize($surveyResults, 'json', [AbstractNormalizer::IGNORED_ATTRIBUTES => ['created_at']]);
         return $this->json([
             'message' => $serialized
+        ]);
+    }
+
+    #[Route(path: '/surveys/results/{id}', name: 'api_survey_results_by_id', methods: 'GET')]
+    public function surveyResultsById(int $id, SurveyResultRepository $surveyResultRepository)
+    {
+        $surveyResult = $surveyResultRepository->find($id);
+        //dump($surveyResults);
+        $normalizer = new ObjectNormalizer();
+        $encoder = new JsonEncoder();
+
+        $serializer = new Serializer([$normalizer], [$encoder]);
+        $serialized = $serializer->serialize($surveyResult, 'json', [AbstractNormalizer::IGNORED_ATTRIBUTES => ['created_at']]);
+        return $this->json([
+            'result' => $serialized
         ]);
     }
 
