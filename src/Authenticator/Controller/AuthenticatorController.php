@@ -10,6 +10,12 @@ use Symfony\Component\Security\Http\Attribute\CurrentUser;
 
 class AuthenticatorController extends AbstractController
 {
+    #[Route(path: '/', name: 'home')]
+    public function home()
+    {
+        return $this->json(['message' => "API homepage"], 200);
+    }
+
     #[Route(path: '/auth/login', name: 'auth_login')]
     public function authenticate(#[CurrentUser] ?SecurityUser $securityUser, UserPasswordHasherInterface $userPasswordHasher)
     {
