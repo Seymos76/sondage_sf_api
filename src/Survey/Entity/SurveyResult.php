@@ -44,6 +44,7 @@ class SurveyResult
 
     public function build(array $data_fields): self
     {
+        dump($data_fields);
         foreach ($data_fields as $name => $value) {
             if (!is_string($value)) {
                 dump('is array',$value);

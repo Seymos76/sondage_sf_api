@@ -21,6 +21,7 @@ class SurveyController extends AbstractController
     {
         $data = json_decode($request->getContent(), true, 512, JSON_THROW_ON_ERROR);
         $surveyResult = new SurveyResult();
+        dump($data);
         $surveyResultToPersist = $surveyResult->build($data);
         $entityManager->persist($surveyResultToPersist);
         $entityManager->flush();

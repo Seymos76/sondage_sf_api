@@ -2,7 +2,14 @@ auth:
     resource: '../src/Authenticator/Controller/'
     type: attribute
     name_prefix: 'auth_'
-surveys:
+survey_api:
     resource: '../src/Survey/Api/'
     type: attribute
     prefix: '/api'
+surveys:
+    resource: '../src/Survey/Controller/'
+    type: attribute
+site:
+    resource: '../src/Site/Controller/'
+    type: attribute
+    name_prefix: 'site_'
